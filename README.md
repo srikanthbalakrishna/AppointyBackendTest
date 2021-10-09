@@ -67,7 +67,7 @@ The application also has the following features as listed in the task document:
  - Secure storage of password:  _Via AES encryption algorithm using a secret key_
  - Server Thread safety: By ensuring concurrency in all functions by making them synchronized using a Mutex
  - Pagination for get-all-posts-of-user API: It accepts a HTTP request parameter _page_ which is used for pagination
- - Unit tests for all the functions which were used for the core-logic
+ - Unit tests for all the functions which were used for the core-logic (with around 90% coverage)
  
  
 # Code Overview
