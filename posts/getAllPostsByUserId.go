@@ -4,6 +4,7 @@ import (
 	"appointy/dbservice"
 	"context"
 	"fmt"
+	"sync"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -19,9 +20,12 @@ But even this approach can become slow as the number of documents increase
 The best way would be have a sorting order(like sorting by ID) and then using a range and
 selecting only those documents from mongoDB that correspond to the right index (index <---derived---- pageNumber)
 */
+
+var getAllUsersLock sync.Mutex
+
 func GetAllPostsByUserId(userid string, pageNumber int) []Post {
-	lock.Lock()
-	defer lock.Unlock()
+	getAllUsersLock.Lock()
+	defer getAllUsersLock.Unlock()
 	var posts []Post
 	client, _ := dbservice.GetMongoClient()
 	var postCollection = client.Database(dbservice.DB).Collection(dbservice.POSTS_COLLECTION)
@@ -34,9 +38,11 @@ func GetAllPostsByUserId(userid string, pageNumber int) []Post {
 	return paginate(posts, ((pageNumber - 1) * CountPerPage), CountPerPage)
 }
 
+var paginateLock sync.Mutex
+
 func paginate(x []Post, skip int, size int) []Post {
-	lock.Lock()
-	defer lock.Unlock()
+	paginateLock.Lock()
+	defer paginateLock.Unlock()
 	if skip > len(x) {
 		skip = len(x)
 	}
