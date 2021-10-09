@@ -38,7 +38,7 @@ func main() {
 			return
 		}
 		createdUser, _ := users.CreateUser(newUser)
-		json.NewEncoder(w).Encode(createdUser.InsertedID)
+		json.NewEncoder(w).Encode(createdUser)
 	})
 
 	//GET /user/{id}
@@ -62,7 +62,7 @@ func main() {
 			return
 		}
 		createdPost, _ := posts.CreatePost(newPost)
-		json.NewEncoder(w).Encode(createdPost.InsertedID)
+		json.NewEncoder(w).Encode(createdPost)
 	})
 
 	//GET /posts/{id} AND posts/users/{id}
