@@ -59,7 +59,7 @@ This project implements all the 5 HTTP-JSON endpoints as specified in the task
  - List all posts of a user: `GET@("/posts/users/{userid}")`    
     ### example:
     ![](img/getAllPostsByUserId.png)    
-    Note: Employed pagination by accepting "page" request parameter. The number of results per page was limited based on `CountPerPage` in `/posts/postEntity.go`     
+    Note: Employed pagination by accepting "page" request parameter. The number of results per page was limited based on `CountPerPage` in [/posts/postEntity.go](/posts/postEntity.go)     
     If page-parameter is not sent in the request then the app returns the first page by default,
     and page 0 is treated same as page 1
     
@@ -81,7 +81,7 @@ Let us have a brief overview on each of the files and folders so we know the flo
  This file is where i relied most on code-snippets and examples from the docs and online.    
  Optimised connection using Once() concept where the connection is made only once and subsequent calls to the function from other functions & threads reuses the same connection.      
     
-**Note: Implemented thread safety for each function by giving it a mutex to use, to ensure that only one thread can use it at a time.**
+**Note: Implemented thread safety for each function below by giving it a mutex to use, to ensure that only one thread can use it at a time.**
  ### `/users`:
   - `createUser.go`: CreateUser(): accepts one user and inserts it into MongoDB
   - `getUser.go`: GetUser(): accepts a user-id (string) and returns one document that matches the _id_
