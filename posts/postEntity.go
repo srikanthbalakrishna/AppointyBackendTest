@@ -9,4 +9,4 @@ type Post struct {
 	UserId    string `json:"userid"`
 }
 
-const CountPerPage int = 2
+const CountPerPage int = 3

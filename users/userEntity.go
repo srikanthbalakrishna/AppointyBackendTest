@@ -8,6 +8,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io"
+	"log"
 )
 
 type User struct {
@@ -37,12 +38,13 @@ func (user *User) EncryptPassword() {
 	block, _ := aes.NewCipher([]byte(createHash(passphrase)))
 	gcm, err := cipher.NewGCM(block)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err)
 	}
 	nonce := make([]byte, gcm.NonceSize())
 	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
-		panic(err.Error())
+		log.Fatal(err)
 	}
+
 	user.Password = string(gcm.Seal(nonce, nonce, []byte(user.Password), nil))
 	fmt.Println("User encrypted password:" + user.Password)
 

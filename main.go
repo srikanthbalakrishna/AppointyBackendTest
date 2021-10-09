@@ -41,7 +41,7 @@ func main() {
 		json.NewEncoder(w).Encode(createdUser.InsertedID)
 	})
 
-	//GET user/{id}
+	//GET /user/{id}
 	http.HandleFunc("/users/", func(w http.ResponseWriter, r *http.Request) {
 		id := strings.TrimPrefix(r.URL.Path, "/users/")
 		fmt.Println(id)
@@ -50,7 +50,7 @@ func main() {
 		}
 	})
 
-	//POST posts
+	//POST /posts
 	http.HandleFunc("/posts", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
@@ -61,14 +61,15 @@ func main() {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-
-		json.NewEncoder(w).Encode(posts.CreatePost(newPost).InsertedID)
+		createdPost, _ := posts.CreatePost(newPost)
+		json.NewEncoder(w).Encode(createdPost.InsertedID)
 	})
 
-	//GET posts/{id} AND posts/users/{id}
+	//GET /posts/{id} AND posts/users/{id}
 	http.HandleFunc("/posts/", func(w http.ResponseWriter, r *http.Request) {
 
 		if strings.Contains(r.URL.Path, "/users/") {
+			// GET /posts/users/{id}
 			page, err := strconv.Atoi(r.URL.Query().Get("page"))
 			if err != nil || page == 0 {
 				page = 1
@@ -79,6 +80,7 @@ func main() {
 				json.NewEncoder(w).Encode(posts.GetAllPostsByUserId(id, page))
 			}
 		} else {
+			// GET /posts/{id}
 			id := strings.TrimPrefix(r.URL.Path, "/posts/")
 			fmt.Println(id)
 			if id != "" {

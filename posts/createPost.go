@@ -11,7 +11,7 @@ import (
 
 var createPostLock sync.Mutex
 
-func CreatePost(newPost Post) *mongo.InsertOneResult {
+func CreatePost(newPost Post) (*mongo.InsertOneResult, error) {
 	createPostLock.Lock()
 	defer createPostLock.Unlock()
 	client, _ := dbservice.GetMongoClient()
@@ -20,5 +20,5 @@ func CreatePost(newPost Post) *mongo.InsertOneResult {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return insertResult
+	return insertResult, err
 }
