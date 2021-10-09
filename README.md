@@ -106,7 +106,7 @@ There are many portions of the application where i felt that i should have done 
 
 3] **Pagination**: I found many references online to skip() and limit() only to realise that these functions were not available in the standard mongo-driver package.
 So i resorted to simply fetching all the documents each time and manually returning the required segment.
-Instead of fetching all documents and manually paginating results each time,We should query documents according to the page-number
+Instead of fetching all documents and manually paginating results each time,We should query documents according to the page-number     
 i.e, skip((pageNumber-1)*CountPerPage) and limit(CounterPerPage)    
 But even this approach can become slow as the number of documents increase.     
 The best way would be have a sorting order(like sorting by ID) and then using a range and
