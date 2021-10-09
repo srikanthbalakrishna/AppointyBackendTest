@@ -6,11 +6,11 @@ This repository was created to implement the backend technical task from Appoint
 https://docs.google.com/document/d/1sFhVumoczf_PmaL_R__Rm9AHqaHsUWgj1x9YcQP6Is4/preview?pru=AAABfIQlmXU*gS6dgizk7ILWVZoh4AxwqA#heading=h.2rc4dswyq09p
 ## Contents:
 - [Introduction](#introduction)
-- [Code OverView](#code-overview)
-- [Exploring Areas for improvement](#areas-for-improvement)
+- [Code Overview](#code-overview)
+- [Exploring Areas for improvement](#exploring-areas-for-improvement)
 
 
-## Introduction
+# Introduction
 Hey there Reader! Welcome to my repo. Before we dive in further, I would like to mention that this was my first time using GO,   
 and it was very much a great experience!   
 For the most part I simply read and followed along the instructions given for each package from docs: https://pkg.go.dev/std,
@@ -70,7 +70,7 @@ The application also has the following features as listed in the task document:
  - Unit tests for all the functions which were used for the core-logic
  
  
-## Code Overview
+# Code Overview
 I have not followed any particular convention for the structure of the project files and folders.    
 Let us have a brief overview on each of the files and folders so we know the flow of the application before diving into the code
  ### `main.go`
@@ -89,15 +89,15 @@ Let us have a brief overview on each of the files and folders so we know the flo
   - `UserFunctions_test.go`: Basic Unit tests for all the utilities used
  ### `/posts`:
   - `createPost.go`: CreatePost(): accepts one post and inserts it into MongoDB
-  - `getAllPostsByUserId.go`: 
-         - GetAllPostsByUserId(): accepts user-id & page number and returns the corresponding documents page-wise
-         - paginate(): code-snippet that returns the desired slice of the []posts array
+  - `getAllPostsByUserId.go`:     
+         - GetAllPostsByUserId(): accepts user-id & page number and returns the corresponding documents page-wise      
+         - paginate(): code-snippet that returns the desired slice of the []posts array      
   - `getPost.go`: GetPost(): accepts a post-id (string) and returns one document that matches the _id_
   - `postEntity.go`:  Defines struct Post and the page-capacity that is used for pagination
   - `PostFunctions_test.go`: Unit tests
 
 
-## Areas for improvement
+# Exploring Areas for improvement
 There are many portions of the application where i felt that i should have done a better job but could not, due to the time constraint as well as me simply being completely new to the GO syntax.   
   
 1] **Password encryption**: I wanted to utilize _**salting**_ as well as hashing so that the passwords cannot be easily reverse engineered using brute force or rainbow table attacks    
