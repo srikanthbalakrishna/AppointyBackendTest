@@ -9,6 +9,8 @@ import (
 )
 
 func GetPost(id string) Post {
+	lock.Lock()
+	defer lock.Unlock()
 	var post Post
 	client, _ := dbservice.GetMongoClient()
 	var postCollection = client.Database(dbservice.DB).Collection(dbservice.POSTS_COLLECTION)

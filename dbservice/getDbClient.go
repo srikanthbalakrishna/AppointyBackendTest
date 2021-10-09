@@ -1,8 +1,6 @@
 // Package dbservice connects to MongoDB and provides a client to use
 package dbservice
 
-// Source: https://levelup.gitconnected.com/working-with-mongodb-using-golang-754ead0c10c
-
 import (
 	"context"
 	"sync"

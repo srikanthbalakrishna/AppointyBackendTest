@@ -9,6 +9,8 @@ import (
 )
 
 func CreatePost(newPost Post) *mongo.InsertOneResult {
+	lock.Lock()
+	defer lock.Unlock()
 	client, _ := dbservice.GetMongoClient()
 	var postCollection = client.Database(dbservice.DB).Collection(dbservice.POSTS_COLLECTION)
 	insertResult, err := postCollection.InsertOne(context.TODO(), newPost)

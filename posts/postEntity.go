@@ -1,5 +1,7 @@
 package posts
 
+import "sync"
+
 // Assuming that each post is associated with a user
 type Post struct {
 	Caption   string `json:"caption"`
@@ -10,3 +12,5 @@ type Post struct {
 }
 
 const CountPerPage int = 2
+
+var lock sync.Mutex

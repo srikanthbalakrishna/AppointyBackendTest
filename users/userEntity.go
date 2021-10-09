@@ -1,8 +1,13 @@
 package users
 
 import (
+	"crypto/aes"
+	"crypto/cipher"
 	"crypto/md5"
+	"crypto/rand"
 	"encoding/hex"
+	"fmt"
+	"io"
 )
 
 type User struct {
@@ -16,12 +21,29 @@ type User struct {
 /*
 We need to implement hashing and salting
 (so that even the encrypted passwords cannot be reverse-engineered easily through rainbow tables or brute force attacks)\
-For the purpose of this project, simply hashing the passwords using a cryptographic algorithm will suffice,
+For the purpose of this project, simply encrypting the passwords using a cryptographic algorithm will suffice,
 Whereas in practice we would use hashing as well as salting with more secure algorithms
 */
-func (user *User) EncryptPassword() {
+//secret-key
+const passphrase string = "srikanth.balakrishna511@gmail.com"
 
-	algorithm := md5.New()
-	algorithm.Write([]byte(user.Password))
-	user.Password = hex.EncodeToString(algorithm.Sum(nil))
+func createHash(key string) string {
+	hasher := md5.New()
+	hasher.Write([]byte(key))
+	return hex.EncodeToString(hasher.Sum(nil))
+}
+
+func (user *User) EncryptPassword() {
+	block, _ := aes.NewCipher([]byte(createHash(passphrase)))
+	gcm, err := cipher.NewGCM(block)
+	if err != nil {
+		panic(err.Error())
+	}
+	nonce := make([]byte, gcm.NonceSize())
+	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
+		panic(err.Error())
+	}
+	user.Password = string(gcm.Seal(nonce, nonce, []byte(user.Password), nil))
+	fmt.Println("User encrypted password:" + user.Password)
+
 }

@@ -20,6 +20,8 @@ The best way would be have a sorting order(like sorting by ID) and then using a 
 selecting only those documents from mongoDB that correspond to the right index (index <---derived---- pageNumber)
 */
 func GetAllPostsByUserId(userid string, pageNumber int) []Post {
+	lock.Lock()
+	defer lock.Unlock()
 	var posts []Post
 	client, _ := dbservice.GetMongoClient()
 	var postCollection = client.Database(dbservice.DB).Collection(dbservice.POSTS_COLLECTION)
@@ -33,6 +35,8 @@ func GetAllPostsByUserId(userid string, pageNumber int) []Post {
 }
 
 func paginate(x []Post, skip int, size int) []Post {
+	lock.Lock()
+	defer lock.Unlock()
 	if skip > len(x) {
 		skip = len(x)
 	}

@@ -11,6 +11,19 @@ import (
 	"strings"
 )
 
+/*
+Note on Thread-safety: From what i read online,the net/http server automatically starts a new goroutine
+for each client connection and executes request handlers in those goroutines.
+So we would only need to secure the other functions that we are using,
+like the dbservice and all the user&post functions
+
+For simplicity and due to time-constraints for this project,
+I chose to just make all those functions synchronised( i.e,only one thread at a time would be able to access it)
+by using the Mutex provided by sync package
+
+This is one significant area-of-future-improvement
+*/
+
 func main() {
 	//POST user
 	http.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
