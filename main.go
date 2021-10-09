@@ -18,13 +18,14 @@ func main() {
 
 		var newUser users.User
 		err := json.NewDecoder(r.Body).Decode(&newUser)
+		newUser.EncryptPassword()
 		fmt.Println(newUser)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-
-		json.NewEncoder(w).Encode(users.CreateUser(newUser).InsertedID)
+		createdUser, _ := users.CreateUser(newUser)
+		json.NewEncoder(w).Encode(createdUser.InsertedID)
 	})
 
 	//GET user/{id}
