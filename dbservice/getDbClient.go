@@ -25,6 +25,8 @@ var mongoOnce sync.Once
 const (
 	CONNECTIONSTRING = "mongodb://localhost:27017"
 	DB               = "appointy"
+	POSTS_COLLECTION = "posts"
+	USERS_COLLECTION = "users"
 )
 
 //GetMongoClient - Return mongodb connection to work with
