@@ -56,6 +56,12 @@ This project implements all the 5 HTTP-JSON endpoints as specified in the task
  - Get a post by id: `GET@("/posts/{id}")`
     ### example:
     ![](img/getPost.png)<br><br>  
+ - List all posts of a user: `GET@("/posts/users/{userid}")`    
+    ### example:
+    ![](img/getAllPostsByUserId.png)    
+    Note: Employed pagination by accepting "page" request parameter. The number of results per page was limited based on `CountPerPage` in `/posts/postEntity.go`     
+    If page-parameter is not sent in the request then the app returns the first page by default,
+    and page 0 is treated same as page 1
     
 The application also has the following features as listed in the task document:
  - Secure storage of password:  _Via AES encryption algorithm using a secret key_
@@ -72,18 +78,23 @@ Let us have a brief overview on each of the files and folders so we know the flo
  - The _main()_ defines all the 5 API endpoints using using http.HandleFunc(), It also starts the server at port 8085
  (Note: I followed the format similar to that from the docs: https://pkg.go.dev/net/http@go1.17.2 )
  ### `/dbservice/getDbClient.go`
- This file is where i relied most on code-snippets and examples from the docs and online
+ This file is where i relied most on code-snippets and examples from the docs and online.    
+ Optimised connection using Once() concept where the connection is made only once and subsequent calls to the function from other functions & threads reuses the same connection.      
+    
+**Note: Implemented thread safety for each function by giving it a mutex to use, to ensure that only one thread can use it at a time.**
  ### `/users`:
-  - `createUser.go`:
-  - `getUser.go`:
-  - `userEntity.go`:
-  - `UserFunctions_test.go`:
+  - `createUser.go`: CreateUser(): accepts one user and inserts it into MongoDB
+  - `getUser.go`: GetUser(): accepts a user-id (string) and returns one document that matches the _id_
+  - `userEntity.go`: Defines struct User, and implements methods for it that perform the password encryption. createHash() converts our passphrase into a hash key and EncryptPassword() encrypts the user's password using AES encryption and the key.
+  - `UserFunctions_test.go`: Basic Unit tests for all the utilities used
  ### `/posts`:
-  - `createPost.go`:
-  - `getAllPostsByUserId.go`:
-  - `getPost.go`:
-  - `postEntity.go`:
-  - `PostFunctions_test.go`:
+  - `createPost.go`: CreatePost(): accepts one post and inserts it into MongoDB
+  - `getAllPostsByUserId.go`: 
+         - GetAllPostsByUserId(): accepts user-id & page number and returns the corresponding documents page-wise
+         - paginate(): code-snippet that returns the desired slice of the []posts array
+  - `getPost.go`: GetPost(): accepts a post-id (string) and returns one document that matches the _id_
+  - `postEntity.go`:  Defines struct Post and the page-capacity that is used for pagination
+  - `PostFunctions_test.go`: Unit tests
 
 
 ## Areas for improvement
